@@ -18,8 +18,11 @@ import { getUser } from '../utils/storage'
 
 // 创建 Axios 实例
 // baseURL 设置了所有请求的公共前缀
+// 使用环境变量 VITE_API_BASE_URL 作为后端地址（部署到 Vercel 时需设置）
+// 本地开发时默认使用相对路径 /api，由 vue-cli 代理到后端
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 const request = axios.create({
-  baseURL: '/api',
+  baseURL: API_BASE_URL ? API_BASE_URL + '/api' : '/api',
   timeout: 30000 // 30秒超时，防止请求卡死
 })
 
