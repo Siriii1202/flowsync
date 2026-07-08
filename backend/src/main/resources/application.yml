@@ -13,6 +13,10 @@ spring:
   application:
     # 应用名称，会注册到服务发现组件中（如果有）
     name: flowsync-api
+  # 全局 Jackson 日期格式和时区
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd
 
   # ---------- 数据源配置（MySQL 数据库连接） ----------
   datasource:

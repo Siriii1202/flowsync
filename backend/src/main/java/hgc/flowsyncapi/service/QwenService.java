@@ -79,12 +79,16 @@ public class QwenService {
             return buildFallbackPlan();
         }
 
-        // 如果前端没传 projectName，通过 projectId 从数据库查询
+        // 通过 projectId 从数据库查询项目信息（名称、日期范围）
         String projectName = request.getProjectName();
-        if (projectName == null || projectName.isBlank()) {
-            if (request.getProjectId() != null) {
-                ProjectInfo project = projectInfoMapper.selectById(request.getProjectId());
-                projectName = project != null ? project.getName() : "";
+        LocalDate projectStartDate = null;
+        LocalDate projectEndDate = null;
+        if (request.getProjectId() != null) {
+            ProjectInfo project = projectInfoMapper.selectById(request.getProjectId());
+            if (project != null) {
+                projectName = project.getName();
+                projectStartDate = project.getStartDate();
+                projectEndDate = project.getEndDate();
             }
         }
         // 仍然没有项目名，返回兜底方案
@@ -95,11 +99,21 @@ public class QwenService {
         String goal = request.getGoal() != null ? request.getGoal() : "";
         String description = request.getDescription() != null ? request.getDescription() : "";
 
+        // 构建日期范围提示
+        String dateRangeHint = "";
+        if (projectStartDate != null && projectEndDate != null) {
+            dateRangeHint = "项目时间范围：" + projectStartDate + " 至 " + projectEndDate + "。"
+                + "请确保每个任务的截止日期在这个范围内。\n";
+        } else if (projectEndDate != null) {
+            dateRangeHint = "项目截止日期：" + projectEndDate + "。请确保所有任务的截止日期不晚于此日期。\n";
+        }
+
         String prompt = "你是一个专业的项目管理助手。请将以下项目拆解成具体的任务列表。\n"
             + "项目名称：" + projectName + "\n"
             + (goal.isEmpty() ? "" : "项目目标：" + goal + "\n")
             + (description.isEmpty() ? "" : "项目描述：" + description + "\n")
-            + "\n请将项目拆解为 3-5 个具体任务，每个任务包含：标题、详细描述、优先级(high/medium/low)、截止日期（格式：YYYY-MM-DD，根据项目截止日期和任务工作量合理分配）。\n"
+            + dateRangeHint
+            + "\n请将项目拆解为 3-5 个具体任务，每个任务包含：标题、详细描述、优先级(high/medium/low)、截止日期（格式：YYYY-MM-DD，根据项目时间范围合理分配）。\n"
             + "请以 JSON 格式返回，格式为：{\"summary\": \"汇总描述\", \"items\": [{\"title\": \"...\", \"description\": \"...\", \"priority\": \"high\", \"dueDate\": \"2026-07-15\"}]}\n"
             + "只返回 JSON，不要包含 Markdown 代码块标记。";
 
@@ -118,6 +132,10 @@ public class QwenService {
                             String desc = itemNode.has("description") ? itemNode.get("description").asText() : "";
                             String pri = itemNode.has("priority") ? itemNode.get("priority").asText() : "medium";
                             String dueDate = itemNode.has("dueDate") ? itemNode.get("dueDate").asText() : "";
+                            // 钳制日期到项目时间范围内，防止 AI 返回超出范围的日期
+                            if ((projectStartDate != null || projectEndDate != null) && !dueDate.isEmpty()) {
+                                dueDate = clampDueDate(dueDate, projectStartDate, projectEndDate);
+                            }
                             items.add(new AiTaskPlanItem(title, desc, pri, dueDate, 1L));
                         }
                     }
@@ -131,7 +149,7 @@ public class QwenService {
         }
 
         // 兜底：使用项目名生成默认拆解
-        return generateDefaultPlan(projectName, goal);
+        return generateDefaultPlan(projectName, goal, projectStartDate, projectEndDate);
     }
 
     /**
@@ -182,22 +200,56 @@ public class QwenService {
     }
 
     /**
+     * 将日期字符串钳制到项目时间范围内
+     * 如果日期早于项目开始日期，则设为项目开始日期
+     * 如果日期晚于项目结束日期，则设为项目结束日期
+     */
+    private String clampDueDate(String dueDateStr, LocalDate projectStartDate, LocalDate projectEndDate) {
+        if (dueDateStr == null || dueDateStr.isBlank()) return dueDateStr;
+        try {
+            LocalDate dueDate = LocalDate.parse(dueDateStr);
+            if (projectStartDate != null && dueDate.isBefore(projectStartDate)) {
+                dueDate = projectStartDate;
+            }
+            if (projectEndDate != null && dueDate.isAfter(projectEndDate)) {
+                dueDate = projectEndDate;
+            }
+            return dueDate.toString();
+        } catch (Exception e) {
+            return dueDateStr;
+        }
+    }
+
+    /**
      * 使用项目名生成默认拆解方案
      */
-    private AiTaskPlanResponse generateDefaultPlan(String projectName, String goal) {
+    private AiTaskPlanResponse generateDefaultPlan(String projectName, String goal,
+                                                    LocalDate projectStartDate, LocalDate projectEndDate) {
+        LocalDate today = LocalDate.now();
+        // 确定基准日期：如果项目有开始日期且晚于今天，则用项目开始日期；否则用今天
+        LocalDate baseDate = today;
+        if (projectStartDate != null && projectStartDate.isAfter(today)) {
+            baseDate = projectStartDate;
+        }
+        // 确定项目总天数，用于按比例分配任务截止日期
+        long totalDays = 30; // 默认30天
+        if (projectEndDate != null) {
+            totalDays = java.time.temporal.ChronoUnit.DAYS.between(baseDate, projectEndDate);
+            if (totalDays < 1) totalDays = 30;
+        }
+
         String summary = "【AI 拆解方案】\n"
             + "针对项目「" + projectName + "」，AI 建议按照以下 " + 4 + " 个阶段逐步推进：\n"
             + (goal.isEmpty() ? "" : "项目目标：" + goal + "\n")
             + "每个阶段均包含明确的目标和交付物，建议按顺序执行。\n";
 
         List<AiTaskPlanItem> items = new ArrayList<>();
-        LocalDate today = LocalDate.now();
 
         items.add(new AiTaskPlanItem(
             projectName + " - 需求分析与规划",
             "深入分析项目需求，明确功能模块划分，编写需求文档。\n输出物：需求规格说明书",
             "high",
-            today.plusDays(3).toString(),
+            baseDate.plusDays(Math.max(1, totalDays / 10)).toString(),
             1L
         ));
 
@@ -205,7 +257,7 @@ public class QwenService {
             projectName + " - 系统设计与架构",
             "完成系统架构设计、数据库设计、接口设计。\n输出物：设计文档、ER图、接口规范",
             "high",
-            today.plusDays(8).toString(),
+            baseDate.plusDays(Math.max(3, totalDays * 3 / 10)).toString(),
             1L
         ));
 
@@ -213,15 +265,17 @@ public class QwenService {
             projectName + " - 核心功能开发",
             "按照设计文档进行核心功能开发，包括前后端编码实现。\n输出物：可运行的代码",
             "high",
-            today.plusDays(18).toString(),
+            baseDate.plusDays(Math.max(7, totalDays * 7 / 10)).toString(),
             2L
         ));
 
+        // 最后一项使用 totalDays，确保不超过项目结束日期
+        long lastTaskDays = Math.min(totalDays, Math.max(10, totalDays));
         items.add(new AiTaskPlanItem(
             projectName + " - 测试与部署",
             "编写测试用例，执行功能测试和集成测试，部署上线。\n输出物：测试报告、部署文档",
             "medium",
-            today.plusDays(21).toString(),
+            baseDate.plusDays(lastTaskDays).toString(),
             2L
         ));
 
@@ -238,12 +292,14 @@ public class QwenService {
 
         List<AiTaskPlanItem> items = new ArrayList<>();
         LocalDate today = LocalDate.now();
+        // 兜底方案默认按30天项目周期分配
+        long defaultDays = 30;
 
         items.add(new AiTaskPlanItem(
             "准备资料与前期调研",
             "收集项目所需的相关资料和参考案例，进行技术调研和可行性分析。",
             "high",
-            today.plusDays(2).toString(),
+            today.plusDays(Math.max(2, defaultDays / 15)).toString(),
             1L
         ));
 
@@ -251,7 +307,7 @@ public class QwenService {
             "执行主体工作",
             "按照项目计划执行核心工作内容，定期进行进度检查和调整。",
             "high",
-            today.plusDays(9).toString(),
+            today.plusDays(Math.max(7, defaultDays * 7 / 10)).toString(),
             2L
         ));
 
@@ -259,7 +315,7 @@ public class QwenService {
             "检查与总结",
             "对完成的工作进行检查验收，编写总结报告，记录经验教训。",
             "medium",
-            today.plusDays(11).toString(),
+            today.plusDays(defaultDays).toString(),
             2L
         ));
 

@@ -9,6 +9,7 @@ hgc\flowsyncapi\dto\RegisterRequest.class
 hgc\flowsyncapi\mapper\UserMapper.class
 hgc\flowsyncapi\mapper\TaskLogMapper.class
 hgc\flowsyncapi\service\TaskInfoService.class
+hgc\flowsyncapi\config\CorsConfig.class
 hgc\flowsyncapi\entity\User.class
 hgc\flowsyncapi\service\TaskSummaryService.class
 hgc\flowsyncapi\controller\ProjectController.class

@@ -7,6 +7,7 @@ import hgc.flowsyncapi.entity.TaskSummary;
 import hgc.flowsyncapi.mapper.ProjectMemberMapper;
 import hgc.flowsyncapi.mapper.TaskInfoMapper;
 import hgc.flowsyncapi.mapper.TaskSummaryMapper;
+import jakarta.annotation.PostConstruct;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,12 +15,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.TimeZone;
+
 /**
  * FlowSync 协同任务管理系统 - 主启动类
  */
 @SpringBootApplication
 @MapperScan("hgc.flowsyncapi.mapper")
 public class FlowSyncApiApplication {
+
+    /**
+     * 设置默认时区为 Asia/Shanghai，确保 LocalDate.now() 等日期操作使用正确时区
+     */
+    @PostConstruct
+    public void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(FlowSyncApiApplication.class, args);
