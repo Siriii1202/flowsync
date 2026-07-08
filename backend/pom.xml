@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         父工程：Spring Boot 3.3.5
+         继承父工程后，可以自动获得 Spring Boot 的各项依赖管理，
+         无需手动指定版本号（如 spring-boot-starter-web 等）。
+         ============================================================ -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.5</version>
+        <relativePath/>
+    </parent>
+
+    <!-- ============================================================
+         项目坐标信息
+         groupId  : 组织标识（通常是公司或项目域名倒写）
+         artifactId: 项目唯一标识（通常为项目名）
+         version   : 版本号
+         ============================================================ -->
+    <groupId>hgc</groupId>
+    <artifactId>flowsync-api</artifactId>
+    <version>1.0.0</version>
+    <name>FlowSync API</name>
+    <description>FlowSync 协同任务管理系统 - 后端 API 服务</description>
+
+    <properties>
+        <!-- 指定 Java 版本为 17（Spring Boot 3.x 要求最低 Java 17） -->
+        <java.version>17</java.version>
+        <!-- MyBatis-Plus 版本（与 Spring Boot 3.x 兼容的版本） -->
+        <mybatis-plus.version>3.5.8</mybatis-plus.version>
+        <!-- SpringDoc OpenAPI 版本（用于自动生成 API 文档） -->
+        <springdoc.version>2.1.0</springdoc.version>
+        <!-- 阿里云 DashScope SDK 版本（用于调用千问 AI 大模型） -->
+        <dashscope.version>2.16.6</dashscope.version>
+    </properties>
+
+    <dependencies>
+        <!-- =========================================================
+             Spring Boot Web 启动器
+             包含 Tomcat 嵌入式容器、Spring MVC、RESTful 支持等
+             ========================================================= -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- =========================================================
+             Spring Boot 核心启动器
+             包含自动配置、日志、YAML 解析等核心功能
+             ========================================================= -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- =========================================================
+             MyBatis-Plus Spring Boot 3 启动器
+             增强版 MyBatis，提供 BaseMapper 等便捷功能
+             ========================================================= -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+
+        <!-- =========================================================
+             MySQL 连接驱动
+             用于连接和操作 MySQL 数据库
+             ========================================================= -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- =========================================================
+             Lombok（精简代码工具）
+             通过注解自动生成 Getter/Setter/构造方法等，
+             减少重复的样板代码
+             ========================================================= -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- =========================================================
+             SpringDoc OpenAPI（接口文档生成）
+             访问 http://localhost:8080/swagger-ui.html 即可查看 API 文档
+             ========================================================= -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+        <!-- =========================================================
+             阿里云 DashScope SDK（千问 AI 大模型调用）
+             用于智能任务建议、任务拆解等 AI 功能
+             ========================================================= -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dashscope-sdk-java</artifactId>
+            <version>${dashscope.version}</version>
+        </dependency>
+
+        <!-- =========================================================
+             Spring Boot 测试启动器
+             提供 JUnit 5、Mockito 等测试框架支持
+             ========================================================= -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Spring Boot Maven 打包插件 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 打包时排除 Lombok（仅在编译期使用） -->
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

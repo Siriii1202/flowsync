@@ -1,0 +1,74 @@
+# ================================================================
+# FlowSync 协同任务管理系统 - 应用配置文件
+# 本文件使用 YAML 格式，通过缩进表示层级关系
+# ================================================================
+
+# ---------- 服务器配置 ----------
+# 配置内嵌 Tomcat 服务器的端口号（默认 8080）
+server:
+  port: 8080
+
+# ---------- Spring 框架配置 ----------
+spring:
+  application:
+    # 应用名称，会注册到服务发现组件中（如果有）
+    name: flowsync-api
+
+  # ---------- 数据源配置（MySQL 数据库连接） ----------
+  datasource:
+    # JDBC 驱动类全限定名（MySQL 8.x 使用 com.mysql.cj.jdbc.Driver）
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接 URL
+    # flowsync_simple 是数据库名；serverTimezone 设置时区为亚洲/上海
+    # useUnicode&characterEncoding 确保中文正常存储
+    url: jdbc:mysql://localhost:3306/flowsync_simple?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    # 数据库用户名
+    username: root
+    # 数据库密码（生产环境建议使用加密配置）
+    password: root
+    # HikariCP 连接池配置
+    hikari:
+      # 连接初始化时执行 SQL，强制设置客户端编码为 utf8mb4（解决 MySQL 全局编码为 gbk 导致的中文乱码）
+      connection-init-sql: SET NAMES utf8mb4
+
+# ---------- MyBatis-Plus 配置 ----------
+mybatis-plus:
+  # 实体类所在的包路径，MyBatis-Plus 会自动扫描该包下的实体类
+  type-aliases-package: hgc.flowsyncapi.entity
+  # 全局策略配置
+  global-config:
+    db-config:
+      # 主键生成策略：自增（数据库自动生成主键值）
+      id-type: auto
+      # 表名前缀（如果所有表都有统一前缀，可以在这里配置）
+      table-prefix: ""
+  # MyBatis 原生配置
+  configuration:
+    # 开启驼峰命名转换：数据库字段 user_name 自动映射为 Java 属性 userName
+    map-underscore-to-camel-case: true
+    # 控制台打印 SQL 语句（开发环境建议开启，生产环境关闭）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# ---------- SpringDoc OpenAPI 文档配置 ----------
+springdoc:
+  api-docs:
+    # 是否启用 OpenAPI 文档接口（默认 true）
+    enabled: true
+    # 文档访问路径
+    path: /api-docs
+  swagger-ui:
+    # Swagger UI 页面访问路径
+    path: /swagger-ui.html
+    # 是否启用 Swagger UI（默认 true）
+    enabled: true
+
+# ---------- 阿里云 DashScope（千问 AI）配置 ----------
+# 注意：实际使用时请在环境变量或此处填入真实的 API Key
+# 安全提醒：切勿将真实 API Key 提交到版本控制系统中
+dashscope:
+  api-key: ${DASHSCOPE_API_KEY:sk-your-api-key-here}
+
+# ---------- DeepSeek AI 配置 ----------
+deepseek:
+  api-key: sk-dd85adf640c747dfbf1630670edb0d86
+  model: deepseek-chat

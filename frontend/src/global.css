@@ -1,0 +1,1012 @@
+/* ========================================
+   Global Styles — 现代极简 SaaS 风格
+   覆盖 Element Plus 组件样式
+   ======================================== */
+
+/* ----- CSS 变量 ----- */
+:root {
+  /* 页面主背景 */
+  --bg-page: #F7F8FA;
+  /* 卡片/容器背景 */
+  --bg-card: #FFFFFF;
+  /* 主文字（标题） */
+  --text-primary: #1F1F1F;
+  /* 次要文字 */
+  --text-secondary: #6B7280;
+  /* 辅助/提示文字 */
+  --text-muted: #9CA3AF;
+  /* 主题色/激活色（靛紫） */
+  --color-primary: #6366F1;
+  /* 柔和版主色（低饱和） */
+  --color-primary-soft: #818CF8;
+  /* 淡紫（用于背景/点缀） */
+  --color-primary-light: #A5B4FC;
+  /* 浅紫背景 */
+  --color-primary-bg: #EEF2FF;
+  /* 柔和石板灰（辅助色） */
+  --color-slate: #7C8B9E;
+  /* 柔和暖灰（页面穿插） */
+  --color-warm-gray: #B0A8A0;
+  /* 浅蓝色（新增穿插色） */
+  --color-blue-light: #DBEAFE;
+  /* 浅蓝背景 */
+  --color-blue-bg: #EFF6FF;
+  /* 浅紫背景（另一种） */
+  --color-purple-bg: #F5F3FF;
+  /* 成功色 */
+  --color-success: #10B981;
+  /* 警告色 */
+  --color-warning: #F59E0B;
+  /* 危险色 */
+  --color-danger: #EF4444;
+  /* 边框色 */
+  --border-color: #E5E7EB;
+  /* 悬停行背景 */
+  --bg-row-hover: #F4F3FF;
+  /* 卡片阴影 */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  /* 弹出层阴影 */
+  --shadow-dropdown: 0 10px 25px rgba(0,0,0,0.08);
+  /* 大圆角 */
+  --radius-card: 16px;
+  --radius-input: 12px;
+  --radius-dialog: 20px;
+  --radius-tag: 8px;
+
+  /* 字体栈 */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+}
+
+/* ----- 全局基础样式 ----- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+/* ----- 标题字重 ----- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0;
+}
+
+/* ========================================
+   Element Plus 组件 Overrides
+   ======================================== */
+
+/* ---------- el-table ---------- */
+.el-table {
+  --el-table-border-color: transparent;
+  --el-table-border: none;
+  --el-table-header-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-row-hover-bg-color: var(--bg-row-hover);
+  --el-table-text-color: var(--text-primary);
+  --el-table-header-text-color: var(--text-secondary);
+  font-size: 14px;
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.el-table::before {
+  display: none;
+}
+
+.el-table thead th {
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: none;
+  background-color: transparent;
+}
+
+.el-table thead th.el-table__cell {
+  background-color: transparent;
+}
+
+.el-table tbody tr {
+  height: 52px;
+}
+
+.el-table tbody tr.el-table__row--striped {
+  background-color: transparent;
+}
+
+.el-table__body tr:hover > td {
+  background-color: var(--bg-row-hover);
+}
+
+.el-table__inner-wrapper::before {
+  display: none;
+}
+
+.el-table--border .el-table__inner-wrapper::after {
+  display: none;
+}
+
+.el-table__cell {
+  border-bottom: none;
+}
+
+.el-table__body-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/* ---------- el-button ---------- */
+.el-button {
+  --el-button-border-radius: 999px;
+  border-radius: 999px;
+  border-width: 1.5px;
+  padding: 10px 24px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.el-button--primary {
+  --el-button-bg-color: var(--color-primary);
+  --el-button-border-color: var(--color-primary);
+  --el-button-hover-bg-color: #4f46e5;
+  --el-button-hover-border-color: #4f46e5;
+  --el-button-active-bg-color: #4338ca;
+  --el-button-active-border-color: #4338ca;
+}
+
+.el-button--success {
+  --el-button-bg-color: var(--color-success);
+  --el-button-border-color: var(--color-success);
+}
+
+.el-button--warning {
+  --el-button-bg-color: var(--color-warning);
+  --el-button-border-color: var(--color-warning);
+}
+
+.el-button--danger {
+  --el-button-bg-color: var(--color-danger);
+  --el-button-border-color: var(--color-danger);
+}
+
+.el-button--default {
+  --el-button-bg-color: #FFFFFF;
+  --el-button-border-color: var(--border-color);
+  --el-button-text-color: var(--text-primary);
+  --el-button-hover-bg-color: #F9FAFB;
+  --el-button-hover-border-color: var(--color-primary);
+  --el-button-hover-text-color: var(--color-primary);
+}
+
+.el-button--small {
+  padding: 6px 18px;
+  font-size: 12px;
+}
+
+.el-button--large {
+  padding: 14px 28px;
+  font-size: 16px;
+}
+
+.el-button.is-text {
+  border: none;
+  padding: 8px 12px;
+}
+
+.el-button.is-link {
+  border: none;
+  padding: 0;
+  height: auto;
+}
+
+/* ---------- el-card ---------- */
+.el-card {
+  --el-card-border-color: transparent;
+  --el-card-border-radius: var(--radius-card);
+  --el-card-padding: 24px;
+  --el-card-bg-color: var(--bg-card);
+  border: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+}
+
+.el-card__header {
+  padding: 24px 24px 0;
+  border-bottom: none;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.el-card__body {
+  padding: 24px;
+}
+
+/* ---------- el-form-item ---------- */
+.el-form-item {
+  margin-bottom: 20px;
+}
+
+.el-form-item__label {
+  font-weight: 500;
+  color: var(--text-primary);
+  padding-bottom: 6px;
+}
+
+.el-form-item--small.el-form-item {
+  margin-bottom: 14px;
+}
+
+.el-form-item__error {
+  font-size: 12px;
+  color: var(--color-danger);
+  padding-top: 2px;
+}
+
+/* ---------- el-input ---------- */
+.el-input {
+  --el-input-border-radius: var(--radius-input);
+  --el-input-border-color: var(--border-color);
+  --el-input-focus-border-color: var(--color-primary);
+  --el-input-hover-border-color: var(--color-primary);
+  --el-input-text-color: var(--text-primary);
+  --el-input-placeholder-color: var(--text-muted);
+  --el-input-bg-color: #FFFFFF;
+  font-size: 14px;
+}
+
+.el-input__wrapper {
+  border-radius: var(--radius-input);
+  box-shadow: 0 0 0 1px var(--border-color) inset;
+  background-color: #FFFFFF;
+  transition: all 0.2s ease;
+}
+
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--color-primary) inset;
+}
+
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 1px var(--color-primary) inset;
+}
+
+.el-textarea__inner {
+  border-radius: var(--radius-input);
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.el-textarea__inner:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+/* ---------- el-dialog ---------- */
+.el-dialog {
+  --el-dialog-border-radius: var(--radius-dialog);
+  --el-dialog-bg-color: var(--bg-card);
+  --el-dialog-title-font-size: 18px;
+  --el-dialog-content-font-size: 14px;
+  border-radius: var(--radius-dialog);
+  border: none;
+  box-shadow: var(--shadow-dropdown);
+  padding: 0;
+}
+
+.el-dialog__header {
+  padding: 28px 28px 0;
+  margin-right: 0;
+}
+
+.el-dialog__title {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.el-dialog__body {
+  padding: 24px 28px;
+  color: var(--text-secondary);
+}
+
+.el-dialog__footer {
+  padding: 0 28px 28px;
+  border-top: none;
+}
+
+.el-dialog__headerbtn {
+  top: 24px;
+  right: 24px;
+  font-size: 16px;
+}
+
+.el-overlay-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.el-overlay {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- el-tag ---------- */
+.el-tag {
+  --el-tag-border-radius: var(--radius-tag);
+  --el-tag-padding: 0 12px;
+  border-radius: var(--radius-tag);
+  padding: 0 12px;
+  height: 28px;
+  line-height: 26px;
+  font-weight: 500;
+  font-size: 12px;
+  border-width: 1px;
+}
+
+.el-tag--small {
+  height: 24px;
+  line-height: 22px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.el-tag--large {
+  height: 34px;
+  line-height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+/* ---------- el-pagination ---------- */
+.el-pagination {
+  --el-pagination-button-width: 32px;
+  --el-pagination-button-height: 32px;
+  --el-pagination-border-radius: 8px;
+  justify-content: center;
+  padding: 16px 0;
+  font-weight: 400;
+}
+
+.el-pagination button {
+  border-radius: 8px;
+  min-width: 32px;
+  height: 32px;
+}
+
+.el-pagination .el-pager li {
+  border-radius: 8px;
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+.el-pagination .el-pager li.is-active {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.el-pagination .el-pagination__total,
+.el-pagination .el-pagination__jump {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.el-pagination__editor.el-input .el-input__wrapper {
+  border-radius: 6px;
+}
+
+/* ---------- el-menu (左侧导航) ---------- */
+.el-menu {
+  --el-menu-bg-color: #FFFFFF;
+  --el-menu-text-color: var(--text-secondary);
+  --el-menu-active-color: var(--color-primary);
+  --el-menu-hover-bg-color: var(--bg-row-hover);
+  --el-menu-item-height: 46px;
+  --el-menu-sub-item-height: 42px;
+  border-right: none;
+  font-weight: 500;
+}
+
+.el-menu-item {
+  border-radius: 10px;
+  margin: 2px 8px;
+  transition: all 0.2s ease;
+  padding-left: 24px !important;
+}
+
+.el-menu-item.is-active {
+  background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+  color: var(--color-primary);
+  font-weight: 600;
+  position: relative;
+}
+
+.el-menu-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background-color: #3B82F6;
+  border-radius: 0 4px 4px 0;
+}
+
+.el-menu-item:hover {
+  background-color: var(--bg-row-hover);
+  color: var(--color-primary);
+}
+
+.el-menu--collapse .el-menu-item.is-active::before {
+  display: none;
+}
+
+.el-menu-item-group__title {
+  padding: 20px 16px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- el-select / el-dropdown ---------- */
+.el-select {
+  --el-select-border-color-hover: var(--color-primary);
+  --el-select-input-focus-border-color: var(--color-primary);
+}
+
+.el-select .el-input__wrapper {
+  border-radius: var(--radius-input);
+}
+
+.el-select-dropdown {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
+  padding: 4px;
+}
+
+.el-select-dropdown__item {
+  font-weight: 400;
+  padding: 0 16px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 8px;
+  margin: 2px 0;
+}
+
+.el-select-dropdown__item.hover {
+  background-color: var(--bg-row-hover);
+}
+
+.el-select-dropdown__item.selected {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.el-dropdown-menu {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
+  padding: 4px;
+}
+
+.el-dropdown-menu__item {
+  font-weight: 400;
+  padding: 8px 16px;
+  line-height: 1.5;
+  border-radius: 8px;
+  margin: 2px 4px;
+}
+
+.el-dropdown-menu__item:hover {
+  background-color: var(--bg-row-hover);
+  color: var(--color-primary);
+}
+
+/* ---------- el-checkbox ---------- */
+.el-checkbox {
+  --el-checkbox-checked-bg-color: var(--color-primary);
+  --el-checkbox-checked-input-border-color: var(--color-primary);
+  --el-checkbox-input-border-color-hover: var(--color-primary);
+  --el-checkbox-checked-icon-color: #FFFFFF;
+  font-weight: 400;
+}
+
+/* ---------- el-radio ---------- */
+.el-radio {
+  --el-radio-checked-icon-color: var(--color-primary);
+  --el-radio-checked-border-color: var(--color-primary);
+  --el-radio-input-border-color-hover: var(--color-primary);
+  font-weight: 400;
+}
+
+/* ---------- el-switch ---------- */
+.el-switch {
+  --el-switch-on-color: var(--color-primary);
+  --el-switch-off-color: var(--border-color);
+}
+
+/* ---------- el-progress ---------- */
+.el-progress-bar__inner {
+  background: linear-gradient(135deg, var(--color-primary), #818CF8);
+  border-radius: 999px;
+}
+
+.el-progress-bar__outer {
+  border-radius: 999px;
+  background-color: #F3F4F6;
+}
+
+/* ---------- el-message ---------- */
+.el-message {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
+  padding: 14px 24px;
+  font-size: 14px;
+}
+
+.el-message--success {
+  background-color: #ECFDF5;
+  color: var(--color-success);
+}
+
+.el-message--warning {
+  background-color: #FFFBEB;
+  color: var(--color-warning);
+}
+
+.el-message--error {
+  background-color: #FEF2F2;
+  color: var(--color-danger);
+}
+
+.el-message--info {
+  background-color: #EEF2FF;
+  color: var(--color-primary);
+}
+
+/* ---------- el-notification ---------- */
+.el-notification {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
+}
+
+/* ---------- el-tooltip ---------- */
+.el-tooltip__popper {
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* ---------- el-empty ---------- */
+.el-empty {
+  padding: 60px 0;
+}
+
+.el-empty__description p {
+  color: var(--text-muted);
+}
+
+/* ---------- el-divider ---------- */
+.el-divider {
+  --el-divider-border-color: var(--border-color);
+  margin: 24px 0;
+}
+
+/* ---------- el-breadcrumb ---------- */
+.el-breadcrumb {
+  font-size: 14px;
+}
+
+.el-breadcrumb__inner {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.el-breadcrumb__item:last-child .el-breadcrumb__inner {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ---------- el-step ---------- */
+.el-step__title {
+  font-size: 14px;
+}
+
+.el-step__head.is-process {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ---------- el-tabs ---------- */
+.el-tabs {
+  --el-tabs-header-height: 40px;
+}
+
+.el-tabs__item {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.el-tabs__item.is-active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.el-tabs__item:hover {
+  color: var(--color-primary);
+}
+
+.el-tabs__active-bar {
+  background-color: var(--color-primary);
+  height: 2px;
+}
+
+/* ---------- el-collapse ---------- */
+.el-collapse {
+  --el-collapse-header-bg-color: transparent;
+  --el-collapse-content-bg-color: transparent;
+  border-top: none;
+  border-bottom: none;
+}
+
+.el-collapse-item__header {
+  font-weight: 500;
+  color: var(--text-primary);
+  height: 44px;
+}
+
+.el-collapse-item__wrap {
+  border-bottom: none;
+}
+
+/* ---------- el-avatar ---------- */
+.el-avatar {
+  --el-avatar-border-radius: 50%;
+  border-radius: 50%;
+}
+
+/* ---------- el-badge ---------- */
+.el-badge__content {
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 11px;
+  padding: 0 6px;
+  border: none;
+}
+
+/* ---------- el-alert ---------- */
+.el-alert {
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+}
+
+.el-alert--info {
+  background-color: #EEF2FF;
+  color: var(--color-primary);
+}
+
+.el-alert--success {
+  background-color: #ECFDF5;
+  color: var(--color-success);
+}
+
+.el-alert--warning {
+  background-color: #FFFBEB;
+  color: var(--color-warning);
+}
+
+.el-alert--error {
+  background-color: #FEF2F2;
+  color: var(--color-danger);
+}
+
+/* ---------- el-drawer ---------- */
+.el-drawer {
+  border: none;
+  box-shadow: var(--shadow-dropdown);
+}
+
+.el-drawer__header {
+  margin-bottom: 0;
+  padding: 24px 24px 0;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.el-drawer__body {
+  padding: 24px;
+}
+
+/* ---------- el-backtop ---------- */
+.el-backtop {
+  --el-backtop-bg-color: var(--bg-card);
+  --el-backtop-hover-bg-color: var(--bg-row-hover);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- el-skeleton ---------- */
+.el-skeleton__item {
+  border-radius: 8px;
+}
+
+/* ---------- el-result ---------- */
+.el-result__title p {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.el-result__subtitle p {
+  color: var(--text-secondary);
+}
+
+/* ---------- el-page-header ---------- */
+.el-page-header {
+  padding: 0;
+}
+
+.el-page-header__title {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+/* ---------- el-descriptions ---------- */
+.el-descriptions__title {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.el-descriptions__label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.el-descriptions__content {
+  color: var(--text-primary);
+}
+
+/* ---------- el-statistic ---------- */
+.el-statistic__head {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.el-statistic__number {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 24px;
+}
+
+/* ---------- el-rate ---------- */
+.el-rate {
+  --el-rate-icon-color: var(--border-color);
+  --el-rate-fill-color: var(--color-warning);
+}
+
+/* ---------- el-slider ---------- */
+.el-slider {
+  --el-slider-runway-bg-color: var(--border-color);
+  --el-slider-bar-bg-color: var(--color-primary);
+  --el-slider-button-bg-color: #FFFFFF;
+  --el-slider-stop-bg-color: var(--border-color);
+}
+
+.el-slider__button {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ---------- el-date-picker ---------- */
+.el-date-editor .el-input__wrapper {
+  border-radius: var(--radius-input);
+}
+
+.el-picker-panel {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
+}
+
+/* ---------- el-upload ---------- */
+.el-upload-dragger {
+  border-radius: 12px;
+  border: 2px dashed var(--border-color);
+  background-color: #FAFBFC;
+  transition: all 0.2s ease;
+}
+
+.el-upload-dragger.is-dragover {
+  border-color: var(--color-primary);
+  background-color: var(--bg-row-hover);
+}
+
+/* ---------- el-tree ---------- */
+.el-tree {
+  --el-tree-node-hover-bg-color: var(--bg-row-hover);
+  --el-tree-text-color: var(--text-primary);
+  --el-tree-node-content-height: 36px;
+  background-color: transparent;
+}
+
+.el-tree-node.is-current > .el-tree-node__content {
+  background-color: var(--bg-row-hover);
+  color: var(--color-primary);
+}
+
+/* ========================================
+   视觉丰富度增强 — 蓝紫穿插 + 呼吸感
+   ======================================== */
+
+/* ----- 页面标题栏（带色块） ----- */
+.page-header-accent {
+  background: linear-gradient(135deg, #F0F5FF 0%, #E8F0FE 50%, #DBEAFE 100%);
+  border-radius: var(--radius-card);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header-accent .header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-header-accent .header-left .el-icon {
+  color: #4F46E5;
+  flex-shrink: 0;
+}
+
+.page-header-accent h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1E293B;
+  letter-spacing: 0.5px;
+}
+
+.page-header-accent .header-en {
+  font-size: 14px;
+  font-weight: 500;
+  color: #94A3B8;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.page-header-accent .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ----- 卡片带顶部色条 ----- */
+.card-accent-blue {
+  border-top: 3px solid var(--color-blue-light);
+}
+
+.card-accent-purple {
+  border-top: 3px solid var(--color-primary-light);
+}
+
+/* ----- 带背景的区块（用于左右面板） ----- */
+.panel-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  border: 1px solid #F3F4F6;
+}
+
+.panel-box-blue {
+  background: linear-gradient(135deg, var(--color-blue-bg), #FFFFFF);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+.panel-box-purple {
+  background: linear-gradient(135deg, var(--color-purple-bg), #FFFFFF);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+/* ----- 统计数字卡片（右上边缘彩色阴影） ----- */
+/* 用户数(第1张) + 总结数(第4张) → 蓝色阴影
+   项目数(第2张) + 任务数(第3张) → 紫色阴影 */
+.stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-card);
+}
+
+/* 四个卡片全部使用蓝色阴影 */
+.stat-grid-item:nth-child(4n+1) .stat-card,
+.stat-grid-item:nth-child(4n+2) .stat-card,
+.stat-grid-item:nth-child(4n+3) .stat-card,
+.stat-grid-item:nth-child(4n+4) .stat-card {
+  box-shadow: 6px -6px 16px rgba(59, 130, 246, 0.35), var(--shadow-card);
+}
+
+/* Hover：卡片整体上移，阴影加深 */
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 10px -10px 24px rgba(59, 130, 246, 0.40), 0 8px 24px rgba(0,0,0,0.10);
+}
+
+/* ----- 表格容器替代纯白卡片 ----- */
+.table-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 4px;
+  border: 1px solid #F3F4F6;
+}
+
+/* ----- 蓝紫交错列表项 ----- */
+.list-striped > div:nth-child(even) {
+  background-color: var(--color-blue-bg);
+}
+
+.list-striped > div:nth-child(odd) {
+  background-color: transparent;
+}
+
+/* ----- 彩色标签点缀 ----- */
+.badge-soft-blue {
+  background-color: var(--color-blue-light) !important;
+  color: #1E40AF !important;
+  border: none !important;
+}
+
+.badge-soft-purple {
+  background-color: var(--color-primary-bg) !important;
+  color: var(--color-primary) !important;
+  border: none !important;
+}
+
+.badge-soft-green {
+  background-color: #D1FAE5 !important;
+  color: #065F46 !important;
+  border: none !important;
+}
