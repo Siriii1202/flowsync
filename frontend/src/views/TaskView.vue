@@ -184,7 +184,9 @@ function isProjectLeader(projectId) {
 
 // 判断当前用户是否有权限管理指定项目的任务
 function canManageProject(projectId) {
-  return isProjectLeader(projectId)
+  // 系统管理员（user.role === 'leader'）可以管理所有项目
+  // 项目负责人也可以管理自己的项目
+  return isSystemAdmin.value || isProjectLeader(projectId)
 }
 
 // 当前对话框选中项目对应的成员列表
