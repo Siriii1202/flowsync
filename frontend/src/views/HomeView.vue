@@ -91,7 +91,7 @@
         </div>
         <div class="today-due-banner" :class="todayPendingTasks > 0 ? 'banner-yellow' : 'banner-green'">
           <el-icon :size="16" style="margin-right: 6px;"><Timer /></el-icon>
-          <span>今天截止未完成 <strong>{{ todayPendingTasks }}</strong> 个任务</span>
+          <span>今天是DDL的未完成项目还有 <strong>{{ todayPendingTasks }}</strong> 个</span>
         </div>
         <router-view />
       </el-main>

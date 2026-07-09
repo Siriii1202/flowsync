@@ -47,7 +47,7 @@
           <el-table-column label="完成" width="60" align="center">
             <template #default="{ row }">
               <el-checkbox
-                v-if="isLeader || row.assigneeId === user?.id"
+                v-if="isSystemAdmin || row.assigneeId === user?.id"
                 :model-value="row.completed === true"
                 @change="(val) => handleToggleComplete(row, val)"
               />

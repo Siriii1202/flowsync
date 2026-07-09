@@ -167,9 +167,10 @@ public class OverviewService {
                         .inSql(TaskInfo::getProjectId, "SELECT id FROM project_info");
                 overview.put("todayDueTasks", taskInfoMapper.selectCount(dueTodayWrapper));
 
-                // 今日待完成任务（截止日=今天 且 未完成）- 不按 assigneeId 过滤，用于顶部提醒条
+                // 今日待完成任务（截止日=今天 且 未完成 且 本人负责）
                 LambdaQueryWrapper<TaskInfo> todayPendingQ = new LambdaQueryWrapper<>();
-                todayPendingQ.eq(TaskInfo::getDueDate, today)
+                todayPendingQ.eq(TaskInfo::getAssigneeId, userId)
+                        .eq(TaskInfo::getDueDate, today)
                         .eq(TaskInfo::getCompleted, false)
                         .inSql(TaskInfo::getProjectId, "SELECT id FROM project_info");
                 overview.put("todayPendingTasks", taskInfoMapper.selectCount(todayPendingQ));
@@ -234,9 +235,10 @@ public class OverviewService {
                         .eq(TaskInfo::getDueDate, today);
                 overview.put("todayDueTasks", taskInfoMapper.selectCount(dueTodayWrapper));
 
-                // 今日待完成任务（截止日=今天 且 未完成）- 不按 assigneeId 过滤，用于顶部提醒条
+                // 今日待完成任务（截止日=今天 且 未完成 且 本人负责）
                 LambdaQueryWrapper<TaskInfo> todayPendingQ = new LambdaQueryWrapper<>();
-                todayPendingQ.in(TaskInfo::getProjectId, projectIds)
+                todayPendingQ.eq(TaskInfo::getAssigneeId, userId)
+                        .in(TaskInfo::getProjectId, projectIds)
                         .eq(TaskInfo::getDueDate, today)
                         .eq(TaskInfo::getCompleted, false);
                 overview.put("todayPendingTasks", taskInfoMapper.selectCount(todayPendingQ));
